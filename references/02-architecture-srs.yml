@@ -1,0 +1,391 @@
+# ==============================================================================
+# SOFTWARE REQUIREMENTS SPECIFICATION (SRS)
+# Project: Amiri - Automated B2B Commercial Proposal Generator (Frontend)
+# Format: YAML (Spec-Driven Development source of truth for Antigravity IDE)
+# ==============================================================================
+
+project_metadata:
+  name: "Amiri"
+  full_name: "Amiri - Automated B2B Commercial Proposal Generator"
+  version: "1.0.0"
+  description: >
+    A production-grade frontend application that interfaces with an asynchronous
+    multi-agent AI backend (orchestrated via LangGraph) to generate B2B commercial
+    proposals. The application submits raw client requirements, polls a stateful
+    backend job for real-time agent progress, and renders the final AI-generated
+    proposal as formatted, exportable content. Built as a professional portfolio
+    artifact demonstrating async state management, resilient polling architecture,
+    and modern React/Next.js engineering practices.
+  target_audience:
+    primary: "B2B Sales Engineers, Pre-Sales Consultants, Account Executives"
+    secondary: "Technical interviewers evaluating frontend engineering competency"
+  authors:
+    - role: "Frontend Architect"
+  license: "MIT"
+  repository_visibility: "public"
+  documentation_language: "English (en-US) exclusively — code, comments, UI copy, commit conventions"
+
+# ------------------------------------------------------------------------------
+architecture:
+  pattern: "Next.js App Router with hybrid Server/Client Component boundary"
+  rendering_strategy:
+    server_components:
+      usage: "Static shells, layout scaffolding, metadata, SEO tags, non-interactive marketing sections"
+      examples:
+        - "app/layout.tsx (root layout, fonts, metadata)"
+        - "app/page.tsx (landing shell wrapping the client-side form)"
+        - "app/(proposal)/layout.tsx"
+    client_components:
+      usage: "Any component requiring hooks, browser APIs, stateful polling, or event handlers"
+      directive: "'use client' declared at the top of the file"
+      examples:
+        - "ProposalForm (controlled inputs, validation state)"
+        - "AgentStatusStepper (polling-driven state)"
+        - "MarkdownViewer (clipboard API, blob downloads)"
+        - "PollingProvider (SWR/React Query hook consumer)"
+    rationale: >
+      Server Components minimize client-side JS for static content, improving
+      Time-to-Interactive. Client Components are isolated to the interactive
+      "proposal generation" flow, which inherently requires client-side state
+      (form data, request_id, polling status) and cannot be server-rendered.
+  state_management:
+    strategy: "Hybrid: Server Cache State (React Query) + Local UI State (useState/useReducer)"
+    server_cache_state:
+      library: "TanStack Query (React Query) v5"
+      responsibility: "Owns request_id, polling status, current_node, final proposal payload, error states"
+    local_ui_state:
+      responsibility: "Form field values, client-side validation errors, UI toggles (e.g., copy button feedback), view transitions"
+      implementation: "React useState / useReducer, no global store required for MVP"
+    global_state_library: "None (Redux/Zustand explicitly avoided — app scope does not justify the overhead)"
+    view_orchestration:
+      mechanism: "Finite state machine pattern (discriminated union) driving a single top-level `AppView` state"
+      states: ["idle", "submitting", "polling", "completed", "failed"]
+  data_flow_diagram_description: >
+    User fills ProposalForm (idle) -> onSubmit triggers useGenerateProposal mutation (submitting)
+    -> 202 Accepted returns request_id -> AppView transitions to (polling) -> useProposalStatus
+    polling hook activates with request_id -> UI renders AgentStatusStepper reflecting current_node
+    -> on status='completed', AppView transitions to (completed) -> MarkdownViewer renders proposal
+    -> on status='failed', AppView transitions to (failed) -> ErrorBoundaryView renders with retry action.
+  folder_structure:
+    root: "/"
+    layout: |
+      app/
+        layout.tsx
+        page.tsx
+        globals.css
+        (proposal)/
+          page.tsx
+      components/
+        proposal-form/
+          ProposalForm.tsx
+          ProposalForm.types.ts
+          validation.ts
+        agent-status/
+          AgentStatusStepper.tsx
+          AgentNodeIndicator.tsx
+        result-view/
+          MarkdownViewer.tsx
+          CopyToClipboardButton.tsx
+          ExportActions.tsx
+        shared/
+          ErrorBoundaryView.tsx
+          LoadingSpinner.tsx
+          AppShell.tsx
+      hooks/
+        useGenerateProposal.ts
+        useProposalStatus.ts
+        useCopyToClipboard.ts
+      lib/
+        api-client.ts
+        constants.ts
+        pdf-export.ts
+      types/
+        proposal.types.ts
+        api.types.ts
+      config/
+        env.ts
+
+# ------------------------------------------------------------------------------
+tech_stack:
+  framework:
+    name: "Next.js"
+    version: "^14.2.0"
+    router: "App Router"
+    language: "TypeScript (strict mode enabled)"
+  styling:
+    name: "Tailwind CSS"
+    version: "^3.4.0"
+    plugins:
+      - "@tailwindcss/typography (for prose-formatted Markdown rendering)"
+      - "@tailwindcss/forms (for consistent form control resets)"
+    design_tokens_config: "tailwind.config.ts extended with custom color palette and font scale"
+  data_fetching:
+    name: "TanStack Query (React Query)"
+    version: "^5.40.0"
+    justification: >
+      Chosen over SWR for its native, first-class `refetchInterval` support with
+      dynamic (function-based) intervals and built-in `enabled` flag for
+      conditional polling — critical for pausing polling once status is terminal.
+  http_client:
+    name: "native fetch API"
+    wrapper: "lib/api-client.ts (typed fetch wrapper with error normalization)"
+  markdown_parser:
+    name: "react-markdown"
+    version: "^9.0.0"
+    plugins:
+      - "remark-gfm (GitHub Flavored Markdown: tables, strikethrough, task lists)"
+    sanitization: "rehype-sanitize (mandatory — backend Markdown treated as untrusted input)"
+  pdf_export:
+    name: "jsPDF + html2canvas"
+    justification: "Fully client-side PDF generation, no backend dependency, free tier compliant"
+  form_validation:
+    name: "Zod"
+    version: "^3.23.0"
+    integration: "react-hook-form + @hookform/resolvers/zod"
+  icons:
+    name: "lucide-react"
+  hosting:
+    provider: "Vercel"
+    tier: "Hobby (Free)"
+    alternative: "Netlify (Free Tier), configuration provided as fallback"
+  package_manager: "pnpm"
+  node_version: "^20.x"
+
+# ------------------------------------------------------------------------------
+ui_ux_specifications:
+  language: "English (en-US) for all UI elements, copy, error messages, and placeholder text."
+  design_system:
+    style: "Minimalist B2B SaaS, high information density with generous whitespace"
+    inspiration_references: ["Linear", "Vercel Dashboard", "Stripe Docs"]
+    color_palette:
+      primary: "Indigo/Slate professional palette (e.g., Indigo-600 accent on Slate-900/50 neutrals)"
+      semantic_states:
+        pending: "amber-500"
+        processing: "blue-500"
+        completed: "emerald-500"
+        failed: "red-500"
+    typography:
+      ui_font: "Inter (via next/font)"
+      monospace_font: "JetBrains Mono (for request_id, technical metadata display)"
+    responsiveness:
+      breakpoints_strategy: "Mobile-first Tailwind breakpoints (sm, md, lg, xl)"
+      target_devices: "Desktop-first optimization (primary B2B use case) with full mobile usability"
+  layout:
+    structure: "Single-page application flow within one dynamic view container (AppShell)"
+    max_width: "max-w-4xl centered container for form and result views"
+    navigation: "Minimal — no multi-page navigation required for MVP; single linear flow"
+  views:
+    InputView:
+      purpose: "Collect raw client requirements and client name to initiate proposal generation"
+      component: "ProposalForm"
+      fields:
+        - name: "client_name"
+          type: "text"
+          label: "Client Name"
+          placeholder: "e.g., Acme Corporation"
+          validation:
+            required: true
+            min_length: 2
+            max_length: 120
+            error_message: "Client name must be between 2 and 120 characters."
+        - name: "raw_requirements"
+          type: "textarea"
+          label: "Raw Requirements"
+          placeholder: "Paste meeting notes, emails, or bullet points describing the client's needs..."
+          validation:
+            required: true
+            min_length: 50
+            max_length: 8000
+            error_message: "Please provide at least 50 characters of context for accurate proposal generation."
+          ui_behavior: "Auto-expanding textarea with live character counter"
+      submit_button:
+        label: "Generate Proposal"
+        disabled_state: "Disabled until Zod schema validation passes"
+        loading_state: "Label changes to 'Submitting...' with inline spinner, button disabled during mutation"
+      accessibility:
+        - "All inputs have associated <label> elements and aria-describedby for error messages"
+        - "Form errors announced via aria-live='polite' region"
+    LoadingView:
+      purpose: "Reflect real-time multi-agent backend progress to sustain user engagement during async processing"
+      component: "AgentStatusStepper"
+      dynamic_behavior: >
+        Renders a vertical stepper UI mapping known LangGraph node identifiers
+        (e.g., 'requirements_analysis', 'solution_architecture', 'pricing_strategy',
+        'proposal_drafting', 'quality_review') to human-readable labels and icons.
+        The node matching `current_node` from the polling response is highlighted
+        as active (pulsing indicator); prior nodes marked as complete (checkmark);
+        future nodes rendered as pending (dimmed).
+      fallback_behavior: >
+        If `current_node` value is unrecognized (not in the static node map),
+        render a generic "Processing your request..." indeterminate state
+        instead of breaking the stepper UI.
+      elapsed_time_display: "Live-updating elapsed timer (mm:ss) to set user expectations"
+      cancel_action: "Optional 'Cancel' link that stops polling and returns to InputView (client-side only, does not cancel backend job)"
+    ResultView:
+      purpose: "Present the final generated proposal in a professional, exportable format"
+      component: "MarkdownViewer"
+      rendering:
+        engine: "react-markdown + remark-gfm + rehype-sanitize"
+        container_style: "Tailwind Typography 'prose' classes (prose-slate) for polished document formatting"
+      actions:
+        copy_to_clipboard:
+          component: "CopyToClipboardButton"
+          behavior: "Copies raw Markdown source to clipboard via navigator.clipboard.writeText"
+          feedback: "Button label toggles to 'Copied!' for 2 seconds, then reverts"
+        download_markdown:
+          label: "Download as .md"
+          implementation: "Client-side Blob generation + anchor download trigger"
+        download_pdf:
+          label: "Download as .pdf"
+          implementation: "html2canvas snapshot of rendered prose container piped into jsPDF"
+          caveat_documented: "Client-side PDF generation has known limitations with complex tables/pagination; documented as a known trade-off for MVP scope"
+        start_new_proposal:
+          label: "Generate Another Proposal"
+          behavior: "Resets AppView state machine to 'idle', clears form and query cache"
+  error_states:
+    network_error: "Toast notification + inline retry button, distinct from backend 'failed' status"
+    backend_failed_status: "Dedicated ErrorBoundaryView with error summary and 'Try Again' CTA returning to InputView"
+    validation_error: "Inline field-level messages, no toast (non-blocking, immediate feedback)"
+
+# ------------------------------------------------------------------------------
+api_integration:
+  base_url:
+    source: "Environment variable, never hardcoded"
+    variable_name: "NEXT_PUBLIC_API_URL"
+    fallback_dev: "http://localhost:8000"
+  client_wrapper:
+    file: "lib/api-client.ts"
+    responsibilities:
+      - "Centralized fetch wrapper with typed request/response generics"
+      - "Normalizes non-2xx responses into a typed ApiError object"
+      - "Attaches base headers (Content-Type: application/json)"
+  endpoints_mapping:
+    generate_proposal:
+      method: "POST"
+      path: "/api/v1/proposals/generate"
+      request_body_schema:
+        raw_requirements: "string (required)"
+        client_name: "string (required)"
+      success_response:
+        status_code: 202
+        body_schema:
+          request_id: "string (UUID)"
+      consumed_by_hook: "useGenerateProposal (useMutation)"
+    get_proposal_status:
+      method: "GET"
+      path: "/api/v1/proposals/{request_id}/status"
+      path_params:
+        request_id: "string (UUID), obtained from generate_proposal response"
+      success_response:
+        status_code: 200
+        body_schema:
+          status: "enum('pending' | 'processing' | 'completed' | 'failed')"
+          current_node: "string | null"
+          proposal_markdown: "string | null (populated only when status === 'completed')"
+          error_detail: "string | null (populated only when status === 'failed')"
+      consumed_by_hook: "useProposalStatus (useQuery with dynamic refetchInterval)"
+  polling_strategy:
+    hook: "useProposalStatus"
+    interval:
+      base_interval_ms: 4000
+      description: "Fixed 4-second interval, within the 3-5s requirement, balancing UX responsiveness against backend load"
+    conditional_execution:
+      enabled_condition: "query only runs when request_id is truthy AND current status is 'pending' or 'processing'"
+      react_query_config: "enabled: !!requestId && !isTerminalStatus"
+    auto_stop_condition: "refetchInterval returns `false` once status is 'completed' or 'failed', halting further polling automatically"
+    timeout_handling:
+      max_polling_duration_ms: 180000
+      behavior_on_timeout: >
+        Client-side watchdog timer (independent of React Query) tracks elapsed
+        polling time. If 180s elapsed without reaching a terminal status, polling
+        is force-stopped and the UI transitions to a 'timeout' variant of the
+        failed state, distinct from a backend-reported 'failed' status, with
+        messaging: "This is taking longer than expected. The backend may still
+        be processing — you can check back later or try again."
+    error_boundary_on_failed_status:
+      trigger: "status === 'failed' in polling response"
+      behavior: "Immediately stop polling, transition AppView to 'failed', render ErrorBoundaryView with `error_detail` message"
+    retry_policy:
+      network_level_retries: "React Query default retry: 3 attempts with exponential backoff, only for transient network/5xx errors"
+      no_retry_on: "4xx client errors (fail fast, surface to user)"
+
+# ------------------------------------------------------------------------------
+component_architecture:
+  - name: "AppShell"
+    type: "Client Component"
+    responsibility: "Top-level state machine orchestrator; renders InputView, LoadingView, or ResultView based on current AppView state"
+  - name: "ProposalForm"
+    type: "Client Component"
+    responsibility: "Captures and validates client_name and raw_requirements; triggers useGenerateProposal mutation on submit"
+    dependencies: ["react-hook-form", "Zod schema from lib/validation.ts"]
+  - name: "AgentStatusStepper"
+    type: "Client Component"
+    responsibility: "Visualizes current_node progress against a predefined ordered list of known agent nodes"
+    props:
+      - "currentNode: string | null"
+      - "status: ProposalStatus"
+  - name: "AgentNodeIndicator"
+    type: "Presentational Component (Server-renderable, no interactivity)"
+    responsibility: "Single stepper item rendering icon + label + state (complete/active/pending)"
+  - name: "MarkdownViewer"
+    type: "Client Component"
+    responsibility: "Renders sanitized proposal_markdown via react-markdown; hosts export action buttons"
+  - name: "CopyToClipboardButton"
+    type: "Client Component"
+    responsibility: "Encapsulates Clipboard API interaction and transient 'copied' UI feedback"
+  - name: "ExportActions"
+    type: "Client Component"
+    responsibility: "Groups download-as-Markdown and download-as-PDF actions"
+  - name: "ErrorBoundaryView"
+    type: "Client Component"
+    responsibility: "Unified rendering for backend 'failed' status, client-side timeout, and unexpected network errors"
+  - name: "LoadingSpinner"
+    type: "Presentational Component"
+    responsibility: "Reusable inline/button-level loading indicator"
+  - name: "useGenerateProposal"
+    type: "Custom Hook (React Query useMutation wrapper)"
+    responsibility: "Encapsulates POST /generate call, returns request_id on success"
+  - name: "useProposalStatus"
+    type: "Custom Hook (React Query useQuery wrapper)"
+    responsibility: "Encapsulates polling logic against GET /status, exposes derived isPolling/isCompleted/isFailed booleans"
+
+# ------------------------------------------------------------------------------
+deployment_specifications:
+  environment_variables:
+    - name: "NEXT_PUBLIC_API_URL"
+      required: true
+      description: "Base URL of the backend API (must be exposed to client since polling occurs client-side)"
+      example: "https://amiri-backend.onrender.com"
+    - name: "NEXT_PUBLIC_POLLING_INTERVAL_MS"
+      required: false
+      default: "4000"
+      description: "Override for polling interval, useful for backend load tuning without a redeploy"
+    - name: "NEXT_PUBLIC_POLLING_TIMEOUT_MS"
+      required: false
+      default: "180000"
+      description: "Override for client-side polling watchdog timeout"
+  build_commands:
+    install: "pnpm install --frozen-lockfile"
+    build: "pnpm run build"
+    start: "pnpm run start"
+    lint: "pnpm run lint"
+    typecheck: "pnpm run typecheck (tsc --noEmit)"
+  vercel_configuration:
+    framework_preset: "Next.js"
+    root_directory: "./"
+    build_command: "pnpm run build"
+    output_directory: ".next"
+    install_command: "pnpm install"
+    node_version: "20.x"
+    environment_variables_setup: "Configured via Vercel Project Settings > Environment Variables (Production, Preview, Development scopes)"
+  netlify_configuration_fallback:
+    build_command: "pnpm run build"
+    publish_directory: ".next"
+    plugin_required: "@netlify/plugin-nextjs"
+  ci_recommendations:
+    - "GitHub Actions workflow: lint + typecheck + build on every pull_request"
+    - "Preview deployments enabled per-branch via Vercel Git integration"
+  performance_targets:
+    lighthouse_performance_score: ">= 90"
+    largest_contentful_paint: "< 2.5s on 4G throttled connection"
+    bundle_analysis: "next/bundle-analyzer run pre-release to guard against Markdown/PDF library bloat"
