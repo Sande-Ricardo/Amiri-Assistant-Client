@@ -3,7 +3,7 @@
 ## Sprint 1: Project Setup & Core Infrastructure
 - [x] Initialize Next.js project with App Router, TypeScript, and Tailwind CSS.
 - [x] Configure `tailwind.config.ts`, `globals.css`, and custom color palette/typography.
-- [ ] Setup `lib/api-client.ts` with error normalization and base URL from env vars.
+- [x] Setup `lib/api-client.ts` with error normalization and base URL from env vars.
 - [ ] Setup React Query provider in root layout.
 - [ ] Create `AppShell` component as the top-level state machine orchestrator.
 

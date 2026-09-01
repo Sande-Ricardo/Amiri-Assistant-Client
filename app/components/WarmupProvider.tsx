@@ -1,8 +1,11 @@
 "use client";
 
+/// <reference types="node" />
+
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-export function WarmupProvider({ children }: { children?: React.ReactNode }) {
+export function WarmupProvider({ children }: { children?: ReactNode }) {
   useEffect(() => {
     const warmupApi = async () => {
       try {
@@ -23,3 +26,4 @@ export function WarmupProvider({ children }: { children?: React.ReactNode }) {
 
   return <>{children}</>;
 }
+
