@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Amiri - Automated B2B Commercial Proposal Generator
+
+Amiri is a production-grade frontend application that interfaces with an asynchronous multi-agent AI backend to generate B2B commercial proposals. 
+
+The application submits raw client requirements, polls a stateful backend job for real-time agent progress, and renders the final AI-generated proposal as formatted, exportable content. It is designed as a robust portfolio artifact demonstrating asynchronous state management, resilient polling architectures, and modern React engineering practices.
+
+## Features
+
+- **Asynchronous Proposal Generation:** Submit raw requirements and client details.
+- **Real-Time Polling & Status Tracking:** Live progress visualization mapping backend AI agent nodes (e.g., requirements analysis, solution architecture) to a UI stepper.
+- **Robust Error Handling:** Comprehensive error boundaries, network retry policies, and a client-side watchdog timeout.
+- **Export Capabilities:** Rendered markdown output with options to copy to clipboard, download as `.md`, or export as `.pdf`.
+
+## Tech Stack
+
+- **Framework:** Next.js (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4 (Indigo/Slate palette)
+- **State Management:** TanStack Query (React Query) for server caching and polling
+- **Validation:** Zod and React Hook Form
+- **Markdown Rendering:** react-markdown with remark-gfm and rehype-sanitize
+- **PDF Generation:** jsPDF and html2canvas
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js (v20.x or higher recommended)
+- pnpm or npm
+
+### Installation
+
+1. Clone the repository and navigate to the client directory.
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory and configure the following variables:
+
+```env
+# Base URL of the backend API
+NEXT_PUBLIC_API_URL=http://localhost:8000
+
+# Optional: Override polling intervals and timeouts (in milliseconds)
+NEXT_PUBLIC_POLLING_INTERVAL_MS=4000
+NEXT_PUBLIC_POLLING_TIMEOUT_MS=180000
+```
+
+### Running the Development Server
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to interact with the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Backend Documentation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The main documentation for the asynchronous multi-agent AI backend (API endpoints, LangGraph architecture, and stateful job execution) can be found at the following repository:
 
-## Learn More
+[Amiri-Assistant-API](https://github.com/Sande-Ricardo/Amiri-Assistant-API)
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License.
