@@ -4,7 +4,7 @@
 - [x] Initialize Next.js project with App Router, TypeScript, and Tailwind CSS.
 - [x] Configure `tailwind.config.ts`, `globals.css`, and custom color palette/typography.
 - [x] Setup `lib/api-client.ts` with error normalization and base URL from env vars.
-- [ ] Setup React Query provider in root layout.
+- [x] Setup React Query provider in root layout.
 - [ ] Create `AppShell` component as the top-level state machine orchestrator.
 
 ## Sprint 2: Form & Input View
