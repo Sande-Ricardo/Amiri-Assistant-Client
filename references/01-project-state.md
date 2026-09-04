@@ -5,7 +5,7 @@
 - [x] Configure `tailwind.config.ts`, `globals.css`, and custom color palette/typography.
 - [x] Setup `lib/api-client.ts` with error normalization and base URL from env vars.
 - [x] Setup React Query provider in root layout.
-- [ ] Create `AppShell` component as the top-level state machine orchestrator.
+- [x] Create `AppShell` component as the top-level state machine orchestrator.
 
 ## Sprint 2: Form & Input View
 - [ ] Create Zod schema in `lib/validation.ts`.
