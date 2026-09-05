@@ -8,7 +8,7 @@
 - [x] Create `AppShell` component as the top-level state machine orchestrator.
 
 ## Sprint 2: Form & Input View
-- [ ] Create Zod schema in `lib/validation.ts`.
+- [x] Create Zod schema in `lib/validation.ts`.
 - [ ] Implement `ProposalForm` using `react-hook-form`.
 - [ ] Implement UI behavior for auto-expanding textarea with live character counter.
 - [ ] Implement `useGenerateProposal` hook (POST `/generate`).
