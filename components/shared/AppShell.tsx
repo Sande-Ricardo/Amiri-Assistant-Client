@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { AppView } from '@/types/proposal.types';
+import { ProposalForm } from '@/components/proposal-form/ProposalForm';
+import { ProposalFormInput } from '@/lib/validation';
 
 export function AppShell() {
   const [currentView, setCurrentView] = useState<AppView>('idle');
@@ -72,19 +74,21 @@ export function AppShell() {
         {/* Placeholder slot for active view component */}
         <div className="w-full bg-slate-900/50 border border-slate-800/80 rounded-xl p-6 sm:p-8 backdrop-blur-sm shadow-2xl">
           {currentView === 'idle' && (
-            <div className="text-center py-8">
-              <h2 className="text-xl font-semibold text-slate-200 mb-2">
-                Input Form Shell
+            <div className="py-2">
+              <h2 className="text-xl font-semibold text-slate-200 mb-2 text-center">
+                New Proposal Request
               </h2>
-              <p className="text-slate-400 text-sm max-w-md mx-auto mb-6">
-                Ready to accept proposal requirements. InputView component will be rendered here.
+              <p className="text-slate-400 text-sm max-w-md mx-auto mb-8 text-center">
+                Provide your client's name and requirements to generate a customized commercial proposal.
               </p>
-              <button
-                onClick={() => setCurrentView('submitting')}
-                className="px-4 py-2 text-xs font-medium rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition-colors"
-              >
-                Simulate Submission
-              </button>
+              <div className="max-w-xl mx-auto">
+                <ProposalForm
+                  onSubmit={(data: ProposalFormInput) => {
+                    console.log('Form submitted with data:', data);
+                    setCurrentView('submitting');
+                  }}
+                />
+              </div>
             </div>
           )}
 
