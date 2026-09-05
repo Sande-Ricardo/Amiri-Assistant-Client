@@ -10,7 +10,7 @@
 ## Sprint 2: Form & Input View
 - [x] Create Zod schema in `lib/validation.ts`.
 - [x] Implement `ProposalForm` using `react-hook-form`.
-- [ ] Implement UI behavior for auto-expanding textarea with live character counter.
+- [x] Implement UI behavior for auto-expanding textarea with live character counter.
 - [ ] Implement `useGenerateProposal` hook (POST `/generate`).
 - [ ] Connect `ProposalForm` submission to `AppShell` to transition state to `submitting` and then `polling`.
 
