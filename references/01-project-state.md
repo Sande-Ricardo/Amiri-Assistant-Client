@@ -12,7 +12,7 @@
 - [x] Implement `ProposalForm` using `react-hook-form`.
 - [x] Implement UI behavior for auto-expanding textarea with live character counter.
 - [x] Implement `useGenerateProposal` hook (POST `/generate`).
-- [ ] Connect `ProposalForm` submission to `AppShell` to transition state to `submitting` and then `polling`.
+- [x] Connect `ProposalForm` submission to `AppShell` to transition state to `submitting` and then `polling`.
 
 ## Sprint 3: Polling & Loading View
 - [ ] Implement `useProposalStatus` hook (GET `/status`) with dynamic `refetchInterval` (4s) and auto-stop conditions.

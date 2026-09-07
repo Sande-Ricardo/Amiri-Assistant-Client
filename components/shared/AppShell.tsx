@@ -4,11 +4,28 @@ import React, { useState } from 'react';
 import { AppView } from '@/types/proposal.types';
 import { ProposalForm } from '@/components/proposal-form/ProposalForm';
 import { ProposalFormInput } from '@/lib/validation';
+import { useGenerateProposal } from '@/hooks/useGenerateProposal';
 
 export function AppShell() {
   const [currentView, setCurrentView] = useState<AppView>('idle');
   const [requestId, setRequestId] = useState<string | null>(null);
   const [errorDetail, setErrorDetail] = useState<string | null>(null);
+
+  const { mutate } = useGenerateProposal();
+
+  const handleProposalSubmit = (data: ProposalFormInput) => {
+    setCurrentView('submitting');
+    mutate(data, {
+      onSuccess: (response) => {
+        setRequestId(response.request_id);
+        setCurrentView('polling');
+      },
+      onError: (error) => {
+        setErrorDetail(error.message);
+        setCurrentView('failed');
+      },
+    });
+  };
 
   const getStatusBadgeClass = (view: AppView) => {
     switch (view) {
@@ -82,12 +99,7 @@ export function AppShell() {
                 Provide your client's name and requirements to generate a customized commercial proposal.
               </p>
               <div className="max-w-xl mx-auto">
-                <ProposalForm
-                  onSubmit={(data: ProposalFormInput) => {
-                    console.log('Form submitted with data:', data);
-                    setCurrentView('submitting');
-                  }}
-                />
+                <ProposalForm onSubmit={handleProposalSubmit} />
               </div>
             </div>
           )}
