@@ -5,6 +5,7 @@ import { AppView } from '@/types/proposal.types';
 import { ProposalForm } from '@/components/proposal-form/ProposalForm';
 import { ProposalFormInput } from '@/lib/validation';
 import { useGenerateProposal } from '@/hooks/useGenerateProposal';
+import { useWatchdogTimer } from '@/hooks/useWatchdogTimer';
 
 export function AppShell() {
   const [currentView, setCurrentView] = useState<AppView>('idle');
@@ -12,6 +13,12 @@ export function AppShell() {
   const [errorDetail, setErrorDetail] = useState<string | null>(null);
 
   const { mutate } = useGenerateProposal();
+
+  useWatchdogTimer(currentView === 'polling', () => {
+    setRequestId(null);
+    setErrorDetail('This is taking longer than expected. The backend may still be processing — you can check back later or try again.');
+    setCurrentView('failed');
+  });
 
   const handleProposalSubmit = (data: ProposalFormInput) => {
     setCurrentView('submitting');
