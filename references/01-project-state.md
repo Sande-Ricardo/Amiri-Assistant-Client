@@ -17,7 +17,7 @@
 ## Sprint 3: Polling & Loading View
 - [x] Implement `useProposalStatus` hook (GET `/status`) with dynamic `refetchInterval` (4s) and auto-stop conditions.
 - [x] Implement 180s client-side watchdog timer for polling timeout.
-- [ ] Implement `AgentNodeIndicator` presentational component.
+- [x] Implement `AgentNodeIndicator` presentational component.
 - [ ] Implement `AgentStatusStepper` mapping current_node to UI progress.
 - [ ] Integrate `AgentStatusStepper` and `useProposalStatus` into `AppShell` during the `polling` state.
 
