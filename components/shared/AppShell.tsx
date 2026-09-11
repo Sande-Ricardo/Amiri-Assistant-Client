@@ -6,6 +6,8 @@ import { ProposalForm } from '@/components/proposal-form/ProposalForm';
 import { ProposalFormInput } from '@/lib/validation';
 import { useGenerateProposal } from '@/hooks/useGenerateProposal';
 import { useWatchdogTimer } from '@/hooks/useWatchdogTimer';
+import { useProposalStatus } from '@/hooks/useProposalStatus';
+import { AgentStatusStepper } from '@/components/agent-status/AgentStatusStepper';
 
 export function AppShell() {
   const [currentView, setCurrentView] = useState<AppView>('idle');
@@ -13,6 +15,28 @@ export function AppShell() {
   const [errorDetail, setErrorDetail] = useState<string | null>(null);
 
   const { mutate } = useGenerateProposal();
+
+  const { data: statusData, isError: statusIsError, error: statusError } = useProposalStatus(
+    currentView === 'polling' ? requestId : null
+  );
+
+  React.useEffect(() => {
+    if (currentView !== 'polling' || !statusData) return;
+    
+    if (statusData.status === 'completed') {
+      setCurrentView('completed');
+    } else if (statusData.status === 'failed') {
+      setErrorDetail(statusData.error_detail || 'Pipeline execution failed on the server.');
+      setCurrentView('failed');
+    }
+  }, [currentView, statusData]);
+
+  React.useEffect(() => {
+    if (currentView === 'polling' && statusIsError) {
+      setErrorDetail(statusError?.message || 'Network error while polling status.');
+      setCurrentView('failed');
+    }
+  }, [currentView, statusIsError, statusError]);
 
   useWatchdogTimer(currentView === 'polling', () => {
     setRequestId(null);
@@ -136,30 +160,15 @@ export function AppShell() {
               <h2 className="text-xl font-semibold text-blue-400 mb-2">
                 Processing Workflow...
               </h2>
-              <p className="text-slate-400 text-sm max-w-md mx-auto mb-2">
+              <p className="text-slate-400 text-sm max-w-md mx-auto mb-8">
                 Polling execution state for Request ID:{' '}
                 <span className="font-mono text-indigo-300">{requestId}</span>
               </p>
-              <p className="text-slate-500 text-xs max-w-md mx-auto mb-6">
-                LoadingView / Agent Workflow Graph will render here.
-              </p>
-              <div className="flex justify-center gap-3">
-                <button
-                  onClick={() => setCurrentView('completed')}
-                  className="px-4 py-2 text-xs font-medium rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition-colors"
-                >
-                  Simulate Completion
-                </button>
-                <button
-                  onClick={() => {
-                    setErrorDetail('Multi-agent pipeline execution failed at Node: Requirement Analysis.');
-                    setCurrentView('failed');
-                  }}
-                  className="px-4 py-2 text-xs font-medium rounded-lg bg-red-600 hover:bg-red-500 text-white transition-colors"
-                >
-                  Simulate Failure
-                </button>
-              </div>
+              
+              <AgentStatusStepper 
+                currentNode={statusData?.current_node ?? null} 
+                status={statusData?.status ?? 'pending'} 
+              />
             </div>
           )}
 

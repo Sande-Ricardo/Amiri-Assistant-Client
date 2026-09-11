@@ -18,8 +18,8 @@
 - [x] Implement `useProposalStatus` hook (GET `/status`) with dynamic `refetchInterval` (4s) and auto-stop conditions.
 - [x] Implement 180s client-side watchdog timer for polling timeout.
 - [x] Implement `AgentNodeIndicator` presentational component.
-- [ ] Implement `AgentStatusStepper` mapping current_node to UI progress.
-- [ ] Integrate `AgentStatusStepper` and `useProposalStatus` into `AppShell` during the `polling` state.
+- [x] Implement `AgentStatusStepper` mapping current_node to UI progress.
+- [x] Integrate `AgentStatusStepper` and `useProposalStatus` into `AppShell` during the `polling` state.
 
 ## Sprint 4: Result View & Export Actions
 - [ ] Implement `MarkdownViewer` using `react-markdown`, `remark-gfm`, and `rehype-sanitize` with Tailwind typography prose.
