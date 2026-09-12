@@ -22,7 +22,7 @@
 - [x] Integrate `AgentStatusStepper` and `useProposalStatus` into `AppShell` during the `polling` state.
 
 ## Sprint 4: Result View & Export Actions
-- [ ] Implement `MarkdownViewer` using `react-markdown`, `remark-gfm`, and `rehype-sanitize` with Tailwind typography prose.
+- [x] Implement `MarkdownViewer` using `react-markdown`, `remark-gfm`, and `rehype-sanitize` with Tailwind typography prose.
 - [ ] Implement `CopyToClipboardButton`.
 - [ ] Implement `ExportActions` with Blob generation for `.md` download.
 - [ ] Implement `.pdf` download functionality using `jsPDF` + `html2canvas`.
