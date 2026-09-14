@@ -12,7 +12,7 @@ export interface MarkdownViewerProps {
 
 export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ content }) => {
   return (
-    <article className="w-full">
+    <article id="proposal-content" className="w-full">
       <div className="prose prose-slate prose-invert max-w-none break-words">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}

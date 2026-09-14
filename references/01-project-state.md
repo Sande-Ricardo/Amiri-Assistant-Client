@@ -25,7 +25,7 @@
 - [x] Implement `MarkdownViewer` using `react-markdown`, `remark-gfm`, and `rehype-sanitize` with Tailwind typography prose.
 - [x] Implement `CopyToClipboardButton`.
 - [x] Implement `ExportActions` with Blob generation for `.md` download.
-- [ ] Implement `.pdf` download functionality using `jsPDF` + `html2canvas`.
+- [x] Implement `.pdf` download functionality using `jsPDF` + `html2canvas`.
 - [ ] Integrate `MarkdownViewer` into `AppShell` during the `completed` state.
 
 ## Sprint 5: Error Handling & Polish
