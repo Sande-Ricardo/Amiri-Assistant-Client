@@ -26,7 +26,7 @@
 - [x] Implement `CopyToClipboardButton`.
 - [x] Implement `ExportActions` with Blob generation for `.md` download.
 - [x] Implement `.pdf` download functionality using `jsPDF` + `html2canvas`.
-- [ ] Integrate `MarkdownViewer` into `AppShell` during the `completed` state.
+- [x] Integrate `MarkdownViewer` into `AppShell` during the `completed` state.
 
 ## Sprint 5: Error Handling & Polish
 - [ ] Implement `ErrorBoundaryView` for backend `failed` status and client-side timeouts.

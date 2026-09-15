@@ -8,6 +8,9 @@ import { useGenerateProposal } from '@/hooks/useGenerateProposal';
 import { useWatchdogTimer } from '@/hooks/useWatchdogTimer';
 import { useProposalStatus } from '@/hooks/useProposalStatus';
 import { AgentStatusStepper } from '@/components/agent-status/AgentStatusStepper';
+import { MarkdownViewer } from '@/components/result-view/MarkdownViewer';
+import { CopyToClipboardButton } from '@/components/result-view/CopyToClipboardButton';
+import { ExportActions } from '@/components/result-view/ExportActions';
 
 export function AppShell() {
   const [currentView, setCurrentView] = useState<AppView>('idle');
@@ -173,23 +176,32 @@ export function AppShell() {
           )}
 
           {currentView === 'completed' && (
-            <div className="text-center py-8">
-              <h2 className="text-xl font-semibold text-emerald-400 mb-2">
-                Proposal Generated Successfully
-              </h2>
-              <p className="text-slate-400 text-sm max-w-md mx-auto mb-6">
-                ResultView markdown viewer and action buttons will render here.
-              </p>
-              <button
-                onClick={() => {
-                  setRequestId(null);
-                  setErrorDetail(null);
-                  setCurrentView('idle');
-                }}
-                className="px-4 py-2 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
-              >
-                Create New Proposal
-              </button>
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+                <h2 className="text-xl font-semibold text-emerald-400">
+                  Proposal Generated Successfully
+                </h2>
+                
+                <div className="flex flex-wrap items-center gap-3">
+                  <CopyToClipboardButton content={statusData?.proposal_markdown || ''} />
+                  <ExportActions content={statusData?.proposal_markdown || ''} />
+                  
+                  <button
+                    onClick={() => {
+                      setRequestId(null);
+                      setErrorDetail(null);
+                      setCurrentView('idle');
+                    }}
+                    className="px-4 py-2 text-sm font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors shadow-sm"
+                  >
+                    New Proposal
+                  </button>
+                </div>
+              </div>
+              
+              <div className="bg-slate-950/50 p-6 rounded-lg border border-slate-800/60 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                <MarkdownViewer content={statusData?.proposal_markdown || ''} />
+              </div>
             </div>
           )}
 
