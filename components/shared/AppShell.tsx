@@ -11,6 +11,7 @@ import { AgentStatusStepper } from '@/components/agent-status/AgentStatusStepper
 import { MarkdownViewer } from '@/components/result-view/MarkdownViewer';
 import { CopyToClipboardButton } from '@/components/result-view/CopyToClipboardButton';
 import { ExportActions } from '@/components/result-view/ExportActions';
+import { ErrorBoundaryView } from '@/components/shared/ErrorBoundaryView';
 
 export function AppShell() {
   const [currentView, setCurrentView] = useState<AppView>('idle');
@@ -206,28 +207,13 @@ export function AppShell() {
           )}
 
           {currentView === 'failed' && (
-            <div className="text-center py-8">
-              <h2 className="text-xl font-semibold text-red-400 mb-2">
-                Pipeline Error Encountered
-              </h2>
-              <p className="text-slate-400 text-sm max-w-md mx-auto mb-4">
-                ErrorBoundaryView component will render here.
-              </p>
-              {errorDetail && (
-                <div className="p-3 bg-red-950/40 border border-red-900/60 rounded-lg max-w-lg mx-auto text-xs text-red-300 font-mono mb-6">
-                  {errorDetail}
-                </div>
-              )}
-              <button
-                onClick={() => {
-                  setErrorDetail(null);
-                  setCurrentView('idle');
-                }}
-                className="px-4 py-2 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
-              >
-                Reset and Try Again
-              </button>
-            </div>
+            <ErrorBoundaryView
+              errorDetail={errorDetail}
+              onReset={() => {
+                setErrorDetail(null);
+                setCurrentView('idle');
+              }}
+            />
           )}
         </div>
       </main>
