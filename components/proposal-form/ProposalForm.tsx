@@ -5,15 +5,17 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { proposalFormSchema, ProposalFormInput } from '@/lib/validation';
 import { ProposalFormProps } from './ProposalForm.types';
+import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 
 export function ProposalForm({ onSubmit }: ProposalFormProps) {
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<ProposalFormInput>({
     resolver: zodResolver(proposalFormSchema),
+    mode: 'onChange',
     defaultValues: {
       client_name: '',
       raw_requirements: '',
@@ -86,10 +88,17 @@ export function ProposalForm({ onSubmit }: ProposalFormProps) {
 
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || !isValid}
         className="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
-        {isSubmitting ? 'Submitting...' : 'Generate Proposal'}
+        {isSubmitting ? (
+          <>
+            <LoadingSpinner size={18} className="text-white" />
+            <span>Submitting...</span>
+          </>
+        ) : (
+          'Generate Proposal'
+        )}
       </button>
     </form>
   );
