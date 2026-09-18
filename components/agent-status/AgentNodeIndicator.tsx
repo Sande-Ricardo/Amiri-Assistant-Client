@@ -14,6 +14,8 @@ export interface AgentNodeIndicatorProps {
   state: NodeState;
   /** Whether this is the last step in the stepper, omitting the bottom connecting line */
   isLast?: boolean;
+  /** Whether this is the currently active step */
+  isActiveStep?: boolean;
 }
 
 export const AgentNodeIndicator: React.FC<AgentNodeIndicatorProps> = ({
@@ -21,9 +23,13 @@ export const AgentNodeIndicator: React.FC<AgentNodeIndicatorProps> = ({
   icon,
   state,
   isLast = false,
+  isActiveStep = false,
 }) => {
   return (
-    <div className="relative flex items-start gap-4">
+    <div 
+      className="relative flex items-start gap-4"
+      aria-current={isActiveStep ? 'step' : undefined}
+    >
       {/* Icon & Connecting Line Column */}
       <div className="flex flex-col items-center">
         {/* Circle Container */}

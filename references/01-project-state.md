@@ -31,7 +31,7 @@
 ## Sprint 5: Error Handling & Polish
 - [x] Implement `ErrorBoundaryView` for backend `failed` status and client-side timeouts.
 - [x] Implement `LoadingSpinner` y validaciones en línea.
-- [ ] Perform final UI polish, responsiveness checks (mobile-first breakpoints), and accessibility review.
+- [x] Perform final UI polish, responsiveness checks (mobile-first breakpoints), and accessibility review.
 - [ ] Validate Vercel deployment configuration and Lighthouse performance targets.
 
 ## Blockers

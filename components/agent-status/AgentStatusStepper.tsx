@@ -61,11 +61,12 @@ export const AgentStatusStepper: React.FC<AgentStatusStepperProps> = ({
   };
 
   return (
-    <div className="w-full max-w-md mx-auto py-6">
+    <div className="w-full max-w-md mx-auto py-6" aria-label="Workflow Progress">
       <div className="flex flex-col">
         {WORKFLOW_STEPS.map((step, index) => {
           const isLast = index === WORKFLOW_STEPS.length - 1;
           const nodeState = getNodeState(index);
+          const isActiveStep = nodeState === 'active';
 
           return (
             <AgentNodeIndicator
@@ -74,6 +75,7 @@ export const AgentStatusStepper: React.FC<AgentStatusStepperProps> = ({
               icon={<step.Icon className="h-4 w-4" />}
               state={nodeState}
               isLast={isLast}
+              isActiveStep={isActiveStep}
             />
           );
         })}

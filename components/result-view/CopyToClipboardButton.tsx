@@ -24,7 +24,7 @@ export const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({ co
   return (
     <button
       onClick={handleCopy}
-      className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 border ${
+      className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-950 ${
         isCopied
           ? 'bg-emerald-950/70 text-emerald-400 border-emerald-800/60 hover:bg-emerald-900/80'
           : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-slate-100'

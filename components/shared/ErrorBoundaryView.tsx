@@ -15,7 +15,11 @@ export const ErrorBoundaryView: React.FC<ErrorBoundaryViewProps> = ({
   onReset,
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center py-12 text-center animate-in fade-in duration-300">
+    <div 
+      className="flex flex-col items-center justify-center py-12 text-center animate-in fade-in duration-300"
+      role="alert" 
+      aria-live="assertive"
+    >
       <div className="h-16 w-16 bg-red-950/50 rounded-full flex items-center justify-center mb-6 ring-8 ring-red-950/20">
         <AlertTriangle className="h-8 w-8 text-red-500" />
       </div>

@@ -57,7 +57,9 @@ export function ProposalForm({ onSubmit }: ProposalFormProps) {
           {...register('client_name')}
         />
         {errors.client_name && (
-          <p className="mt-1 text-sm text-red-400">{errors.client_name.message}</p>
+          <p className="mt-1 text-sm text-red-400" role="alert" aria-live="polite">
+            {errors.client_name.message}
+          </p>
         )}
       </div>
 
@@ -82,7 +84,9 @@ export function ProposalForm({ onSubmit }: ProposalFormProps) {
           }}
         />
         {errors.raw_requirements && (
-          <p className="mt-1 text-sm text-red-400">{errors.raw_requirements.message}</p>
+          <p className="mt-1 text-sm text-red-400" role="alert" aria-live="polite">
+            {errors.raw_requirements.message}
+          </p>
         )}
       </div>
 
