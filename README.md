@@ -6,27 +6,28 @@ The application submits raw client requirements, polls a stateful backend job fo
 
 ## Features
 
-- **Asynchronous Proposal Generation:** Submit raw requirements and client details.
-- **Real-Time Polling & Status Tracking:** Live progress visualization mapping backend AI agent nodes (e.g., requirements analysis, solution architecture) to a UI stepper.
-- **Robust Error Handling:** Comprehensive error boundaries, network retry policies, and a client-side watchdog timeout.
-- **Export Capabilities:** Rendered markdown output with options to copy to clipboard, download as `.md`, or export as `.pdf`.
+- **Asynchronous Proposal Generation:** Submit raw requirements and client details. The UI handles the transition smoothly from submission to polling.
+- **Real-Time Polling & Status Tracking:** Live progress visualization maps backend AI agent nodes (e.g., *requirements analysis*, *solution architecture*) to a dynamic UI stepper.
+- **Robust Error Handling:** Comprehensive error boundaries, network retry policies, and a client-side watchdog timeout ensure users are never left waiting indefinitely.
+- **Export Capabilities:** The rendered markdown output can be seamlessly copied to the clipboard, downloaded as a `.md` source file, or exported as a stylized `.pdf`.
+- **Accessibility & UX Polish:** Includes fully accessible ARIA live regions for screen readers, mobile-first responsive breakpoints, strict inline Zod validation, and comprehensive keyboard navigability.
 
 ## Tech Stack
 
 - **Framework:** Next.js (App Router)
 - **Language:** TypeScript
-- **Styling:** Tailwind CSS v4 (Indigo/Slate palette)
-- **State Management:** TanStack Query (React Query) for server caching and polling
+- **Styling:** Tailwind CSS v4 (Custom Indigo/Slate palette & Typography plugin)
+- **State Management:** TanStack Query (React Query) for server caching, mutations, and polling
 - **Validation:** Zod and React Hook Form
-- **Markdown Rendering:** react-markdown with remark-gfm and rehype-sanitize
-- **PDF Generation:** jsPDF and html2canvas
+- **Markdown Rendering:** `react-markdown` with `remark-gfm` and `rehype-sanitize`
+- **PDF Generation:** `jsPDF` and `html2canvas`
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js (v20.x or higher recommended)
-- pnpm or npm
+- `npm` (Windows environments should use `npm.cmd` when executing scripts if encountering execution policies)
 
 ### Installation
 
@@ -58,6 +59,14 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to interact with the application.
+
+## Deployment to Vercel
+
+Amiri is optimized for a zero-configuration deployment to Vercel. 
+1. Import the repository into your Vercel dashboard.
+2. Vercel will automatically detect the **Next.js** framework preset.
+3. Ensure you add `NEXT_PUBLIC_API_URL` to the Environment Variables section before building.
+4. The application uses optimized typography (`next/font`) and semantic HTML, targeting 90+ Lighthouse performance scores out of the box.
 
 ## Backend Documentation
 
