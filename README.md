@@ -1,5 +1,10 @@
 # Amiri - Automated B2B Commercial Proposal Generator
 
+> [!IMPORTANT]
+> **This repository contains only the Frontend client application.**
+> For the complete system architecture, API definitions, and the LangGraph multi-agent orchestration, please refer to the Backend repository:
+> [Amiri Assistant Backend](https://github.com/Sande-Ricardo/Amiri-Assistant-API)
+
 Amiri is a production-grade frontend application that interfaces with an asynchronous multi-agent AI backend to generate B2B commercial proposals. 
 
 The application submits raw client requirements, polls a stateful backend job for real-time agent progress, and renders the final AI-generated proposal as formatted, exportable content. It is designed as a robust portfolio artifact demonstrating asynchronous state management, resilient polling architectures, and modern React engineering practices.
