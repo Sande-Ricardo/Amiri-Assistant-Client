@@ -18,6 +18,10 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Amiri - Automated B2B Commercial Proposal Generator",
   description: "Generate production-grade B2B commercial proposals powered by an asynchronous multi-agent AI backend.",
+  icons: {
+    icon: "/logo.jpg",
+    apple: "/logo.jpg",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

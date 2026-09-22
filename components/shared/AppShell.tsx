@@ -84,20 +84,8 @@ export function AppShell() {
       <header className="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-indigo-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <svg
-                className="w-5 h-5 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
+            <div className="w-9 h-9 rounded-lg overflow-hidden flex items-center justify-center shadow-lg shadow-indigo-500/20 bg-slate-900 border border-slate-700">
+              <img src="/logo.jpg" alt="Amiri Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <span className="font-bold text-lg tracking-wider text-slate-100 uppercase">
@@ -160,7 +148,10 @@ export function AppShell() {
           )}
 
           {currentView === 'polling' && (
-            <div className="text-center py-8">
+            <div className="text-center py-8 flex flex-col items-center">
+              <div className="w-16 h-16 rounded-xl overflow-hidden mb-6 shadow-lg shadow-indigo-500/20 animate-pulse border border-slate-700">
+                <img src="/logo.jpg" alt="Amiri Logo" className="w-full h-full object-cover" />
+              </div>
               <h2 className="text-xl font-semibold text-blue-400 mb-2">
                 Processing Workflow...
               </h2>
@@ -221,7 +212,10 @@ export function AppShell() {
       {/* Footer */}
       <footer className="border-t border-slate-800/60 py-4 text-center text-xs text-slate-500">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Amiri Assistant Client &mdash; Multi-Agent B2B Proposal Engine</span>
+          <div className="flex items-center gap-2">
+            <img src="/logo.jpg" alt="Amiri Logo" className="w-4 h-4 opacity-50 grayscale rounded-sm" />
+            <span>Amiri Assistant Client &mdash; Multi-Agent B2B Proposal Engine</span>
+          </div>
           <span className="font-mono text-slate-600">v1.0.0</span>
         </div>
       </footer>
